@@ -1,0 +1,7 @@
+{
+	"port": 8180,
+	"sauertrackerURL": "http://sauertracker.net/",
+	"localURL": "http://banners.sauertracker.net/",
+	"cache": true,
+	"externalCache": true
+}

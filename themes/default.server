@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<svg width="512" height="64"
+    viewBox="0 0 512 64"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <style>
+        svg {
+            font-family: Maven Pro;
+            font-weight: bold;
+        }
+        .stats-prop {
+            fill: #b0eeff;
+            font-size: 13px;
+        }
+        .stats-val {
+            fill: #fbf088;
+            font-size: 13px;
+        }
+    </style>
+
+    <clipPath id="clipRoundFrame">
+        <rect x="0" y="0"
+            width="512" height="64"
+            rx="5" ry="5"/>
+    </clipPath>
+
+    <filter id="blurMe">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
+    </filter>
+
+    <rect x="0" y="0"
+        width="512" height="64"
+        rx="5" ry="5"
+        fill="#000000"/>
+
+    <image xlink:href="{{mapshot server.mapName}}"
+        x="-50" y="-274px"
+        width="612px" height="612px"
+        clip-path="url(#clipRoundFrame)"
+        filter="url(#blurMe)"/>
+
+    <rect x="0" y="0"
+        width="512" height="64"
+        rx="5" ry="5"
+        fill="#000000" opacity="0.4"/>
+
+    <image xlink:href="{{flag server.country}}"
+        x="10px" y="5px"
+        width="24px" height="24px"/>
+
+    <text x="40px" y="22px"
+          style="fill: #d6d6d6;">
+        {{server.description}}
+    </text>
+
+    <text x="370px" y="22px"
+            style="font-size: 13px;
+                    fill: #7feffa;">
+        SAUERTRACKER.NET
+    </text>
+
+    <text x="10px" y="41px"
+            style="fill: #d6d6d6;
+                    font-size: 15px;">
+        {{server.gameMode}} {{server.mapName}} |
+        <tspan style="fill:
+            {{#ifeq server.masterMode "open"}}
+                lightgreen
+            {{else}} {{#ifeq server.masterMode "private"}}
+                #df6969
+            {{else}} {{#ifeq server.masterMode "locked"}}
+                yellow
+            {{else}}
+                #d6d6d6
+            {{/ifeq}}{{/ifeq}}{{/ifeq}};">{{server.masterMode}}</tspan>
+        | {{server.gameType}} | {{server.timeLeftS}} |
+        <tspan style="fill:
+            {{#ifgte server.clients server.maxClients}}
+        		yellow
+            {{else}}
+                #d6d6d6
+        	{{/ifgte}};">{{server.clients}}/{{server.maxClients}}</tspan>
+        players
+    </text>
+
+    <text x="10px" y="56px" class="stats-prop">
+        Server:
+        <tspan class="stats-val">{{server.host}} {{server.port}}</tspan>
+    </text>
+    <text x="240px" y="56px" class="stats-prop">
+        Rank:
+        <tspan class="stats-val">{{server.rank}}</tspan>
+    </text>
+    <text x="360px" y="56px" class="stats-prop">
+        Games:
+        <tspan class="stats-val">{{server.totalGames}}</tspan>
+    </text>
+</svg>

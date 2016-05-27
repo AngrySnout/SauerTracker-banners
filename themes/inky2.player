@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<svg width="600" height="64"
+    viewBox="0 0 600 64"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <style>
+        svg {
+            font-family: Maven Pro;
+            font-weight: bold;
+        }
+        .stats-prop {
+            fill: #b0eeff;
+            font-size: 13px;
+        }
+        .stats-val {
+            fill: #fbf088;
+            font-size: 12px;
+        }
+    </style>
+
+    <clipPath id="clipRoundFrame">
+        <rect x="0" y="0"
+            width="600" height="64"
+            rx="5" ry="5"/>
+    </clipPath>
+
+    <filter id="blurMe">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+    </filter>
+
+    <image xlink:href="{{cache "http://www.zastavki.com/pictures/originals/2015/Backgrounds_Round_glare__red_background_100077_.jpg"}}"
+        x="0" y="-137px"
+        width="600px" height="338px"
+        clip-path="url(#clipRoundFrame)"
+        filter="url(#blurMe)"/>
+
+    <rect x="0" y="0"
+        width="600" height="64"
+        rx="5" ry="5"
+        fill="#000000" opacity="0.2"/>
+
+    <image xlink:href="http://localhost:8180/images/inky3.png"
+        x="430px" y="0"
+        width="200px" height="64px"/>
+
+    <image xlink:href="{{flag player.country}}"
+        x="10px" y="5px"
+        width="24px" height="24px"/>
+
+  	<text x="40px" y="22px"
+          style="font-size: 16px;
+                 fill: #ffffff;">
+      {{player.name}}
+      {{#if player.online}}
+        <tspan style="font-size: 12px;
+                      fill: #81df84;">
+          online
+        </tspan>
+      {{/if}}
+  	</text>
+
+    <text x="310px" y="22px"
+            style="font-size: 13px;
+                    fill: #7feffa;">
+        SAUERTRACKER.NET
+    </text>
+
+    <text x="10px" y="42px" class="stats-prop">Rank:</text>
+    <text x="180px" y="42px" class="stats-prop">Frags:</text>
+    <text x="350px" y="42px" class="stats-prop">Flags:</text>
+
+    <text x="10px" y="56px" class="stats-prop">Games:</text>
+    <text x="180px" y="56px" class="stats-prop">Deaths:</text>
+    <text x="350px" y="56px" class="stats-prop">K/D:</text>
+
+    <text x="80px" y="42px" class="stats-val">{{player.rank}}</text>
+    <text x="250px" y="42px" class="stats-val">{{player.frags}}</text>
+    <text x="420px" y="42px" class="stats-val">{{player.flags}}</text>
+
+    <text x="80px" y="56px" class="stats-val">{{player.totalGames}}</text>
+    <text x="250px" y="56px" class="stats-val">{{player.deaths}}</text>
+    <text x="420px" y="56px" class="stats-val">{{player.kpd}}</text>
+</svg>

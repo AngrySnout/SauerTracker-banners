@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<svg width="512" height="64"
+    viewBox="0 0 512 64"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <style>
+        svg {
+            font-family: Maven Pro;
+            font-weight: bold;
+        }
+        .stats-prop {
+            fill: #b0eeff;
+            font-size: 13px;
+        }
+        .stats-val {
+            fill: #fbf088;
+            font-size: 12px;
+        }
+    </style>
+
+    <clipPath id="clipRoundFrame">
+        <rect x="0" y="0"
+            width="512" height="64"
+            rx="5" ry="5"/>
+    </clipPath>
+
+    <filter id="blurMe">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+    </filter>
+
+    <image xlink:href="{{cache "http://www.zastavki.com/pictures/originals/2015/Backgrounds_Round_glare__red_background_100077_.jpg"}}"
+        x="0" y="-120px"
+        width="512px" height="288px"
+        clip-path="url(#clipRoundFrame)"
+        filter="url(#blurMe)"/>
+
+    <rect x="0" y="0"
+        width="512" height="64"
+        rx="5" ry="5"
+        fill="#000000" opacity="0.2"/>
+
+    <text x="10px" y="22px"
+            style="font-size: 20px;
+                    fill: #ffffff;">
+        {{clan.info.tag}}
+        <tspan style="font-size: 16px;">
+            {{clan.info.title}}
+        </tspan>
+    </text>
+
+    <text x="360px" y="22px"
+            style="font-size: 13px;
+                    fill: #7feffa;">
+        SAUERTRACKER.NET
+    </text>
+
+    <text x="10px" y="42px" class="stats-prop">Rank:</text>
+    <text x="190px" y="42px" class="stats-prop">Wins:</text>
+    <text x="370px" y="42px" class="stats-prop">Losses:</text>
+
+    <text x="10px" y="56px" class="stats-prop">Win rate:</text>
+    <text x="190px" y="56px" class="stats-prop">Website:</text>
+
+    <text x="90px" y="42px" class="stats-val">{{clan.rank}}</text>
+    <text x="270px" y="42px" class="stats-val">{{clan.wins}}</text>
+    <text x="450px" y="42px" class="stats-val">{{clan.losses}}</text>
+
+    <text x="90px" y="56px" class="stats-val">{{clan.rate}}%</text>
+    <text x="270px" y="56px" class="stats-val">{{clan.info.website}}</text>
+</svg>
