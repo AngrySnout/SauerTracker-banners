@@ -16,7 +16,7 @@
     "express": "^4.13.4",
     "handlebars": "^4.0.5",
     "phantomjs-prebuilt": "^2.1.7",
-    "source-map-support": "^0.4.0",
+    "source-map-support": "^0.4.0"
   },
   "devDependencies": {
     "del": "^2.2.0",
