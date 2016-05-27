@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Banner server for SauerTracker.",
   "main": "main.js",
+  "repository": "https://github.com/AngrySnout/SauerTracker-banners",
   "scripts": {
         "build": "gulp build",
     	"stop": "NODE_ENV=production forever stop sauertrackerbanners",
