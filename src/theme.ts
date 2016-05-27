@@ -1,7 +1,6 @@
 /// <reference path="../typings/tsd.d.ts"/>
 /// <reference path="../typings/index.d.ts"/>
 
-const gm = require("gm");
 const Handlebars = require('handlebars');
 import http = require("http");
 import Promise = require("bluebird");

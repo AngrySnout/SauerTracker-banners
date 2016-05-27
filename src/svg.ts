@@ -1,5 +1,4 @@
 const Handlebars = require('handlebars');
-const svg2png = require("svg2png");
 const config = require("../config.json");
 import fs = require("fs");
 import Promise = require("bluebird");
