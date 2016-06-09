@@ -5,7 +5,7 @@
   "main": "main.js",
   "repository": "https://github.com/AngrySnout/SauerTracker-banners",
   "scripts": {
-    "postinstall": "node ./build/prerender.js",
+    "prerender": "node ./build/prerender.js",
     "build": "gulp build",
     "stop": "NODE_ENV=production forever stop sauertrackerbanners",
     "start": "NODE_ENV=production forever -a --uid \"sauertrackerbanners\" start --killSignal=SIGINT main.js"
