@@ -12,6 +12,7 @@ It creates an image based on a theme and some variables. Simple as that. These v
 The following themes are built-in (more themes will be added later):
 
 - default (player, server, and clan)
+
 	![](http://banners.sauertracker.net/player?name=Nix&theme=default)
 
 	![](http://banners.sauertracker.net/server?host=164.132.110.240&port=28785&theme=default)
@@ -19,6 +20,7 @@ The following themes are built-in (more themes will be added later):
 	![](http://banners.sauertracker.net/clan?clantag=!s]&theme=default)
 
 - inky (player)
+
 	![](http://banners.sauertracker.net/player?name=MTH&theme=inky)
 
 ## How to write themes?
