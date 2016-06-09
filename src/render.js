@@ -1,8 +1,12 @@
 const path = require('path')
 const childProcess = require('child_process')
 const phantomjs = require('phantomjs-prebuilt')
+const Promise = require("bluebird");
+import {TaskQueue} from 'cwait';
+
+const config = require("../config.json");
+
 const binPath = phantomjs.path
-import Promise = require("bluebird");
 
 const childArgs = [
 	path.join(__dirname, '../phantomjs-script.js')
@@ -12,10 +16,14 @@ const childArgs = [
 
 const PREFIX = "data:image/png;base64,";
 
-export default function render(svg: Buffer) {
+function render_t(svg) {
 	return new Promise((resolve, reject) => {
 		let cp = childProcess.execFile(binPath, childArgs, (err, stdout, stderr) => {
-			if (err) reject(err);
+			if (err) {
+				console.log(err);
+				reject(new Error("Error running PhantomJS"));
+				return;
+			}
 
 			let stdout2 = stdout.toString();
 			if (stdout2.startsWith(PREFIX)) {
@@ -25,7 +33,7 @@ export default function render(svg: Buffer) {
 			if (stdout2.length) reject(new Error(stdout2.replace(/\r/g, "").trim()));
 			let stderr2 = stderr.toString();
 			if (stderr2.length) reject(new Error(stderr2.replace(/\r/g, "").trim()));
-			reject(new Error("No data received from the PhantomJS child process"));
+			reject(new Error("Error: No data received from the PhantomJS child process"));
 		});
 
 	    cp.stdin.cork();
@@ -35,4 +43,15 @@ export default function render(svg: Buffer) {
 	    }
 	    cp.stdin.end("\n");
 	});
+}
+
+var queueLength = 0;
+var queue = new TaskQueue(Promise, config.queueConcurrent);
+var render_q = queue.wrap(render_t);
+
+export default function render(svg) {
+	if (queueLength >= config.queueMaxLength) return Promise.reject(new Error("Server queue is full"));
+
+	queueLength++;
+	return render_q(svg).finally(() => { queueLength--; });
 }

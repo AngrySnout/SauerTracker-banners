@@ -1,10 +1,7 @@
-/// <reference path="../typings/tsd.d.ts"/>
-/// <reference path="../typings/index.d.ts"/>
-
-import fs = require("fs");
-import crypto = require("crypto");
-import http = require("http");
-import Promise = require("bluebird");
+const fs = require("fs");
+const crypto = require("crypto");
+const http = require("http");
+const Promise = require("bluebird");
 
 const config = require("../config.json");
 
@@ -14,8 +11,8 @@ class CacheManager {
 	}
 
 	purge() {
-		let tenMinAgo = new Date();
-		tenMinAgo.setMinutes(tenMinAgo.getMinutes()-10);
+		let cacheTimeout = new Date();
+		cacheTimeout.setSeconds(cacheTimeout.getSeconds()-config.maxCacheTimeout);
 
 		fs.readdir("./cache", function (err, files) {
 			if (err) {
@@ -31,7 +28,7 @@ class CacheManager {
 						return;
 					}
 
-					if (stats.mtime < tenMinAgo) {
+					if (stats.mtime < cacheTimeout) {
 						fs.unlink(path);
 					}
 				});
@@ -39,23 +36,17 @@ class CacheManager {
 		});
 	}
 
-	get(path: string, template: string, cacheTimeout: number) {
-		return new Promise((resolve: Function, reject: Function) => {
-			if (!config.cache) {
-				reject("Cache disabled");
-				return;
-			}
-
+	get(name, cacheTimeout) {
+		return new Promise((resolve, reject) => {
 			let hash = crypto.createHash("sha256");
-			hash.update(path);
-			hash.update(template);
+			hash.update(name);
 			hash = hash.digest("hex");
 			let outFile = `./cache/${hash}`;
 
 			fs.stat(outFile, (err, stats) => {
 				if (err && err.code != "ENOENT") {
-					reject(err);
 					console.log(err);
+					reject(err);
 					return;
 				} else {
 					if (!err) {
@@ -67,26 +58,21 @@ class CacheManager {
 								if (err) reject(err);
 								else resolve(data);
 							});
-							console.log(`Cache HIT on "${path}" ${hash}`);
+							console.log(`Cache HIT on ${hash}`); //"${name}"
 							return;
 						}
 					}
 
-					console.log(`Cache MISS on "${path}" ${hash}`);
-					reject("Cache entry not found");
+					console.log(`Cache MISS on ${hash}`); // "${name}"
+					reject(new Error("Cache entry not found"));
 				}
 			});
-
-			return hash;
 		});
 	}
 
-	set(path: string, template: string, contents: Buffer) {
-		if (!config.cache) return null;
-
+	fromBuffer(name, contents) {
 		let hash = crypto.createHash("sha256");
-		hash.update(path);
-		hash.update(template);
+		hash.update(name);
 		hash = hash.digest("hex");
 		let outFile = `./cache/${hash}`;
 
@@ -94,7 +80,7 @@ class CacheManager {
 		return hash;
 	}
 
-	external(url) {
+	fromURL(url) {
 		let hash = crypto.createHash("sha256");
 		hash.update(url);
 		hash = hash.digest("hex");
@@ -103,14 +89,14 @@ class CacheManager {
 
 		res.push(hash);
 
-		res.push(new Promise((resolve: Function, reject: Function) => {
+		res.push(new Promise((resolve, reject) => {
 			let outFile = `./external/${hash}`;
 
 			fs.stat(outFile, (err, stats) => {
 				if (err) {
 					let file = fs.createWriteStream(outFile);
 					let request = http.get(url, response => {
-						if (response.statusCode != 200) reject();
+						if (response.statusCode != 200) reject(new Error(`Got status code ${response.statusCode} from server`));
 						else {
 							response.on("data", chunk => {
 								file.write(chunk);
@@ -132,5 +118,5 @@ class CacheManager {
 	}
 }
 
-let cacheManager = new CacheManager();
+var cacheManager = new CacheManager();
 export default cacheManager;
