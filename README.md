@@ -4,17 +4,19 @@
 It creates an image based on a theme and some variables. Simple as that. These variables can be player, server, or clan stats. You can either use built-in themes or create custom ones.
 
 ## How to use it?
-*http://banners.sauertracker.net/player?name=...&theme=...*  
-*http://banners.sauertracker.net/server?host=...&port=...&theme=...*
+*http://banners.sauertracker.net/player?name=...&theme=...*   
+*http://banners.sauertracker.net/server?host=...&port=...&theme=...*   
 *http://banners.sauertracker.net/clan?host=...&port=...&theme=...*
 
 ## Default themes:
 The following themes are built-in (more themes will be added later):
 
 - default (player, server, and clan)
-	![](http://banners.sauertracker.net/player?name=Nix&theme=long)
+	![](http://banners.sauertracker.net/player?name=Nix&theme=default)
 
-	![](http://banners.sauertracker.net/server?host=164.132.110.240&port=28785&theme=long)
+	![](http://banners.sauertracker.net/server?host=164.132.110.240&port=28785&theme=default)
+
+	![](http://banners.sauertracker.net/clan?clantag=!s]&theme=default)
 
 - inky (player)
 	![](http://banners.sauertracker.net/player?name=MTH&theme=inky)
