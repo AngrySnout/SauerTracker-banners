@@ -80,9 +80,12 @@ Same goes for a clan theme template:
 
 Refer to https://sauertracker.net/api for more information on the *server*, *player*, and *clan* API paths.
 
+See [built-in themes](https://github.com/AngrySnout/SauerTracker-banners/tree/master/themes) for some examples.
+
 ## Notes and bugs
 
 * Be careful when using in-line HTML with the foreignObject element. The results in some browsers might be different from the server generated images. You must experiment.
+* When writing your template, make sure you have all the fonts used or else preview will not work, regardless of whether they are available on the server or not.
 
 ## License
 GNU General Public License v3.0
