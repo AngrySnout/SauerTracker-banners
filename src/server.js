@@ -22,7 +22,6 @@ app.use(function (req, res, next) {
 	next();
 });
 
-app.use("/images", express.static("./images"));
 app.use("/external", express.static("./external"));
 
 app.listen(config.port, function () {

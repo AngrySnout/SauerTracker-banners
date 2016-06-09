@@ -19,10 +19,6 @@ The following themes are built-in (more themes will be added later):
 
 	![](http://banners.sauertracker.net/clan?clantag=!s]&theme=default)
 
-- inky (player)
-
-	![](http://banners.sauertracker.net/player?name=MTH&theme=inky)
-
 ## How to write themes?
 A theme is a Handlebars template, which generates an SVG document, which is rendered and served as a PNG. Simple, no?
 
@@ -42,7 +38,7 @@ The following Handlebars block helpers are also available:
 {{#ifgte a b}} a >= b {{else}} a < b {{/ifeq}}
 ```
 
-To use external images, you can simply put their URL in an `image` element. However it is recommended that you use the `cache` directive so that the banner loads faster. For example:
+To use external images, you can simply put their URL in an `image` element. However it is recommended that you use the `cache` directive to make the banner load faster. For example:
 ```
 <image xlink:href="{{cache "http://i.imgur.com/xxxxxxx.png"}}" .../>
 ```
@@ -89,7 +85,7 @@ See [built-in themes](https://github.com/AngrySnout/SauerTracker-banners/tree/ma
 ## Notes and bugs
 
 * Be careful when using in-line HTML with the foreignObject element. The results in some browsers might be different from the server generated images. You must experiment.
-* When writing your template, make sure you have all the fonts used or else preview will not work, regardless of whether they are available on the server or not.
+* When writing a custom template, make sure you have all the fonts you used installed on your computer, or else preview will not work regardless of whether they are available on the server or not.
 
 ## License
 GNU General Public License v3.0
