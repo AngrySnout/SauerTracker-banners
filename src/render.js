@@ -16,7 +16,7 @@ const childArgs = [
 
 const PREFIX = "data:image/png;base64,";
 
-function render_t(svg) {
+export function render_t(svg) {
 	return new Promise((resolve, reject) => {
 		let cp = childProcess.execFile(binPath, childArgs, (err, stdout, stderr) => {
 			if (err) {
