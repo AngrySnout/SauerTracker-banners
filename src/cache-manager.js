@@ -58,12 +58,10 @@ class CacheManager {
 								if (err) reject(err);
 								else resolve(data);
 							});
-							console.log(`Cache HIT on ${hash}`); //"${name}"
 							return;
 						}
 					}
 
-					console.log(`Cache MISS on ${hash}`); // "${name}"
 					reject(new Error("Cache entry not found"));
 				}
 			});
@@ -85,9 +83,7 @@ class CacheManager {
 		hash.update(url);
 		hash = hash.digest("hex");
 
-		let res = [];
-
-		res.push(hash);
+		let res = [hash];
 
 		res.push(new Promise((resolve, reject) => {
 			let outFile = `./external/${hash}`;
@@ -103,13 +99,12 @@ class CacheManager {
 							});
 							response.on("end", () => {
 								file.end();
-								resolve();
+								resolve(hash);
 							});
 						}
 					});
-					return hash;
 				} else {
-					resolve();
+					resolve(hash);
 				}
 			});
 		}));

@@ -48,37 +48,56 @@ app.post("/register", function (req, res) {
 	});
 });
 
-function sendError(message, res) {
+function sendError(message, url, res) {
 	res.type("image/png");
-	generateError(message).then(img => { res.send(img); });
+	generateError(message).then(img_ => {
+		if (img_ instanceof Array) {
+			res.send(img_[0]);
+			console.log(`Cache MISS on '${message}' '${url}' (${img_[1]} ms)`);
+		} else {
+			res.send(img_);
+			console.log(`Cache HIT on '${message}' '${url}'`);
+		}
+	});
 }
 
-function sendBanner(type, params, res) {
-	if (!params.theme) return sendError("Error: No theme supplied", res);
+function sendBanner(type, params, url, res) {
+	if (!params.theme) return sendError("Error: No theme supplied", url, res);
 
 	themeManager.get(type, params.theme).then(theme => {
 		res.type("image/png");
-		return theme.generate(params).then(img => { res.send(img); });
+		return theme.generate(params).then(img_ => {
+			if (img_ instanceof Array) {
+				res.send(img_[0]);
+				console.log(`Cache MISS on '${url}' (${img_[1]} ms)`);
+			} else {
+				res.send(img_);
+				console.log(`Cache HIT on '${url}'`);
+			}
+		});
 	}).catch(e => {
-		sendError(`Error: ${e.message}`, res);
+		sendError(`Error: ${e.message}`, url, res);
 	});
 }
 
 app.get("/player", (req, res) => {
-	if (!req.query.name) return sendError("Error: Player name not supplied", res);
+	if (!req.query.name) return sendError("Error: Player name not supplied", req.originalUrl, res);
 
-	sendBanner("player", req.query, res);
+	sendBanner("player", req.query, req.originalUrl, res);
 });
 
 app.get("/server", (req, res) => {
-	if (!req.query.host) sendError("Error: Server host not supplied", res);
-	if (!req.query.port) sendError("Error: Server port not supplied", res);
+	if (!req.query.host) sendError("Error: Server host not supplied", req.originalUrl, res);
+	if (!req.query.port) sendError("Error: Server port not supplied", req.originalUrl, res);
 
-	sendBanner("server", req.query, res);
+	sendBanner("server", req.query, req.originalUrl, res);
 });
 
 app.get("/clan", (req, res) => {
-	if (!req.query.clantag) sendError("Error: Clantag not supplied", res);
+	if (!req.query.clantag) sendError("Error: Clantag not supplied", req.originalUrl, res);
 
-	sendBanner("clan", req.query, res);
+	sendBanner("clan", req.query, req.originalUrl, res);
 });
+
+// Cache MISS on "/player?name=!s]Origin&theme=default" (350 ms)
+// Cache HIT on "/player?name=!s]Origin&theme=default"

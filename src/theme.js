@@ -64,7 +64,7 @@ export default class Theme {
 			}
 			obj = prepare[this.type](obj);
 
-			return render(new Buffer(this.compiledTemplate(obj)));
+			return this.compiledTemplate(obj).then(svg => render(new Buffer(svg)));
 		});
 	}
 
@@ -72,9 +72,9 @@ export default class Theme {
 		let path = paths[this.type](params);
 		return cacheManager.get(path+this.template, this.cacheTimeout)
 			.catch(err => {
-				return this.prepare(path).then(img => {
-					cacheManager.fromBuffer(path+this.template, img);
-					return img;
+				return this.prepare(path).then(img_ => {
+					cacheManager.fromBuffer(path+this.template, img_[0]);
+					return img_;
 				});
 			});
 	}

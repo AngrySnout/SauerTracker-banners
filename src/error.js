@@ -36,23 +36,21 @@ export default function generateError(message) {
 						if (err) reject(err);
 						else resolve(data);
 					});
-					console.log(`Cache HIT on error "${message}" ${hash}`);
 					return;
 				}
-
-				console.log(`Cache MISS on error "${message}" ${hash}`);
 
 				cacheManager.get("error"+message, 10*60)
                     .then(res => {
                         resolve(res);
                     }).catch(err => {
-						let svg = errorTemplate({ message: message });
-						let buf = new Buffer(svg);
+                        errorTemplate({ message: message }).then(svg => {
+    						let buf = new Buffer(svg);
 
-						render(buf).then(img => {
-							cacheManager.fromBuffer("error"+message, img);
-							resolve(img);
-						});
+    						render(buf).then(img_ => {
+    							cacheManager.fromBuffer("error"+message, img_[0]);
+    							resolve(img_);
+    						});
+                        });
 					});
 			}
 		});
