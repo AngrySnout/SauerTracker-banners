@@ -49,8 +49,8 @@ app.post("/register", function (req, res) {
 });
 
 function sendError(message, url, res) {
-	res.type("image/png");
 	generateError(message).then(img_ => {
+		res.type("image/png");
 		if (img_ instanceof Array) {
 			res.send(img_[0]);
 			console.log(`Cache MISS on '${message}' '${url}' (${img_[1]} ms)`);
@@ -65,8 +65,8 @@ function sendBanner(type, params, url, res) {
 	if (!params.theme) return sendError("Error: No theme supplied", url, res);
 
 	themeManager.get(type, params.theme).then(theme => {
-		res.type("image/png");
 		return theme.generate(params).then(img_ => {
+			res.type("image/png");
 			if (img_ instanceof Array) {
 				res.send(img_[0]);
 				console.log(`Cache MISS on '${url}' (${img_[1]} ms)`);

@@ -53,7 +53,7 @@ export function render_t(svg) {
 				cp.kill('SIGINT');
 				reject(new Error("Rendering took too long"));
 			}
-		}, 2000);
+		}, config.renderTimeLimit);
 	});
 }
 
