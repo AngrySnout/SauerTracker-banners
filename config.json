@@ -9,5 +9,5 @@
 		"max": 1800
 	},
 	"queueMaxLength": 10,
-	"queueConcurrent": 2
+	"queueConcurrency": 3
 }

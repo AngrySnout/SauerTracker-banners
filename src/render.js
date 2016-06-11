@@ -58,7 +58,7 @@ export function render_t(svg) {
 }
 
 var queueLength = 0;
-var queue = new TaskQueue(Promise, config.queueConcurrent);
+var queue = new TaskQueue(Promise, config.queueConcurrency);
 var render_q = queue.wrap(render_t);
 
 export default function render(svg) {
