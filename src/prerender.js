@@ -15,7 +15,8 @@ const messages = [
 	"Error: Server port not supplied",
 	"Error: Clantag not supplied",
 	"Error: No theme supplied",
-	"Error: Server queue is full"
+	"Error: Server queue is full",
+	"Error: Rendering took too long"
 ];
 
 Promise.map(messages, message => {
