@@ -18,8 +18,10 @@ const PREFIX = "data:image/png;base64,";
 
 export function render_t(svg) {
 	return new Promise((resolve, reject) => {
+		let startTime = Date.now();
+
 		let cp = childProcess.execFile(binPath, childArgs, (err, stdout, stderr) => {
-			if (err) {
+			if (err && err.signal !== "SIGINT") {
 				console.log(err);
 				reject(new Error("Error running PhantomJS"));
 				return;
@@ -27,7 +29,7 @@ export function render_t(svg) {
 
 			let stdout2 = stdout.toString();
 			if (stdout2.startsWith(PREFIX)) {
-				resolve(new Buffer(stdout2.substring(PREFIX.length), "base64"));
+				resolve([new Buffer(stdout2.substring(PREFIX.length), "base64"), Date.now()-startTime]);
 			}
 
 			if (stdout2.length) reject(new Error(stdout2.replace(/\r/g, "").trim()));
@@ -42,6 +44,16 @@ export function render_t(svg) {
 	        cp.stdin.write(aaString.substring(offset, offset + 1024));
 	    }
 	    cp.stdin.end("\n");
+
+		// Kill the PhantomJS process if it's taking too long
+		let running = true;
+		cp.on('exit', () => { running = false; } );
+		setTimeout(() => {
+			if (running) {
+				cp.kill('SIGINT');
+				reject(new Error("Rendering took too long"));
+			}
+		}, 2000);
 	});
 }
 
