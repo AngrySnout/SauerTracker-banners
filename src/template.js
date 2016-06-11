@@ -1,4 +1,5 @@
 const Handlebars = require('handlebars');
+const Promise = require("bluebird");
 const config = require("../config.json");
 import cacheManager from "./cache-manager";
 
@@ -56,5 +57,11 @@ Handlebars.registerHelper("mapshot", function(map) {
 });
 
 export default function compile(template) {
-	return Handlebars.compile(template);
+	let ct = Handlebars.compile(template);
+	return (obj) => {
+		let res = ct(obj);
+		let ps = promises;
+		promises = [];
+		return Promise.all(ps).then(() => res);
+	}
 }
