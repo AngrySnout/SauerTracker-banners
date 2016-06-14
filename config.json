@@ -9,6 +9,6 @@
 		"max": 1800
 	},
 	"queueMaxLength": 10,
-	"queueConcurrency": 3,
-	"renderTimeLimit": 4000
+	"queueConcurrency": 2,
+	"renderTimeLimit": 6000
 }
