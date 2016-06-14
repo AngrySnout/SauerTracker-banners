@@ -21,7 +21,7 @@ const messages = [
 
 Promise.map(messages, message => {
 	return errorTemplate({ message: message }).then(template => {
-		render_t(new Buffer(template)).then(img => {
+		return render_t(new Buffer(template)).then(img => {
 			let hash = crypto.createHash("sha256");
 			hash.update(message);
 			hash = hash.digest("hex");
