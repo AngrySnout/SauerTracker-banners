@@ -21,12 +21,12 @@ const messages = [
 
 Promise.map(messages, message => {
 	return errorTemplate({ message: message }).then(template => {
-		return render_t(new Buffer(template)).then(img => {
+		return render_t(new Buffer(template)).then(img_ => {
 			let hash = crypto.createHash("sha256");
 			hash.update(message);
 			hash = hash.digest("hex");
 
-			return writeFile(`./prerendered/${hash}`, img);
+			return writeFile(`./prerendered/${hash}`, img_[0]);
 		});
 	});
 }, { concurrency: 2 }).then(() => process.exit());
