@@ -1,6 +1,6 @@
 {
 	"port": 8180,
-	"sauertrackerURL": "http://sauertracker.net/",
+	"sauertrackerURL": "http://127.0.0.1:8880",
 	"externalCache": true,
 	"cacheTimeouts": {
 		"player": 1800,
