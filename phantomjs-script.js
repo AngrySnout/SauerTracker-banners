@@ -11,6 +11,7 @@ convert();
 
 function convert() {
     var page = webpage.create();
+    page.settings.javascriptEnabled = false;
     var sourceBase64 = system.stdin.readLine();
 
     page.open(PREFIX + sourceBase64, function (status) {
@@ -47,31 +48,34 @@ function convert() {
 }
 
 function getSVGDimensions(page) {
-    return page.evaluate(function () {
-        /* global document: true */
+    var width = parseInt(/<svg.+width=["']([0-9%]*)\w*["'].*?>/g.exec(page.content)[1]);
+    var height = parseInt(/<svg.+height=["']([0-9%]*)\w*["'].*?>/g.exec(page.content)[1]);
 
-        var el = document.querySelector("svg");
+    var widthIsPercent = /%\s*$/.test(width || ""); // Phantom doesn't have endsWith
+    var heightIsPercent = /%\s*$/.test(height || "");
+    var width = !widthIsPercent && parseFloat(width);
+    var height = !heightIsPercent && parseFloat(height);
 
-        var widthIsPercent = /%\s*$/.test(el.getAttribute("width") || ""); // Phantom doesn't have endsWith
-        var heightIsPercent = /%\s*$/.test(el.getAttribute("height") || "");
-        var width = !widthIsPercent && parseFloat(el.getAttribute("width"));
-        var height = !heightIsPercent && parseFloat(el.getAttribute("height"));
+    if (width && height) {
+        return { width: width, height: height };
+    }
 
-        if (width && height) {
-            return { width: width, height: height };
-        }
+    var viewBox = /<svg.*viewbox="([0-9 ]*)".*?>/g.exec(page.content);
+    var viewBoxWidth;
+    var viewBoxHeight;
+    if (viewBox && viewBox.length > 0) {
+        viewBox = viewBox[0].split(" ");
+        viewBoxWidth = parseInt(viewBox[2]);
+        viewBoxHeight = parseInt(viewBox[3]);
+    }
 
-        var viewBoxWidth = el.viewBox.animVal.width;
-        var viewBoxHeight = el.viewBox.animVal.height;
+    if (width && viewBoxHeight) {
+        return { width: width, height: width * viewBoxHeight / viewBoxWidth };
+    }
 
-        if (width && viewBoxHeight) {
-            return { width: width, height: width * viewBoxHeight / viewBoxWidth };
-        }
+    if (height && viewBoxWidth) {
+        return { width: height * viewBoxWidth / viewBoxHeight, height: height };
+    }
 
-        if (height && viewBoxWidth) {
-            return { width: height * viewBoxWidth / viewBoxHeight, height: height };
-        }
-
-        return null;
-    });
+    return null;
 }
