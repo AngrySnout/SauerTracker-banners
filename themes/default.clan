@@ -60,12 +60,20 @@
     <text x="370px" y="42px" class="stats-prop">Losses:</text>
 
     <text x="10px" y="56px" class="stats-prop">Win rate:</text>
+    {{#if clan.info.website}}
     <text x="190px" y="56px" class="stats-prop">Website:</text>
+    {{else if clan.info.discord}}
+    <text x="190px" y="56px" class="stats-prop">Discord:</text>
+    {{/if}}
 
     <text x="90px" y="42px" class="stats-val">{{clan.rank}}</text>
     <text x="270px" y="42px" class="stats-val">{{clan.wins}}</text>
     <text x="450px" y="42px" class="stats-val">{{clan.losses}}</text>
 
     <text x="90px" y="56px" class="stats-val">{{clan.rate}}%</text>
+    {{#if clan.info.website}}
     <text x="270px" y="56px" class="stats-val">{{clan.info.website}}</text>
+    {{else if clan.info.discord}}
+    <text x="270px" y="56px" class="stats-val">{{clan.info.discord}}</text>
+    {{/if}}
 </svg>
