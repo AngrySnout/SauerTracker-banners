@@ -44,7 +44,7 @@ export default function generateError(message) {
                         resolve(res);
                     }).catch(err => {
                         errorTemplate({ message: message }).then(svg => {
-    						let buf = new Buffer(svg);
+    						let buf = Buffer.from(svg);
 
     						render(buf).then(img_ => {
     							cacheManager.fromBuffer("error"+message, img_[0]);

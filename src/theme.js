@@ -64,7 +64,7 @@ export default class Theme {
 			}
 			obj = prepare[this.type](obj);
 
-			return this.compiledTemplate(obj).then(svg => render(new Buffer(svg)));
+			return this.compiledTemplate(obj).then(svg => render(Buffer.from(svg)));
 		});
 	}
 

@@ -29,7 +29,7 @@ export function render_t(svg) {
 
 			let stdout2 = stdout.toString();
 			if (stdout2.startsWith(PREFIX)) {
-				resolve([new Buffer(stdout2.substring(PREFIX.length), "base64"), Date.now()-startTime]);
+				resolve([Buffer.from(stdout2.substring(PREFIX.length), "base64"), Date.now()-startTime]);
 			}
 
 			if (stdout2.length) reject(new Error(stdout2.replace(/\r/g, "").trim()));
