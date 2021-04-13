@@ -13,7 +13,7 @@ var watch = require('gulp-watch');
 gulp.task('js', function() {
 	return gulp.src('./src/**/*')
 		.pipe(sourcemaps.init({ loadMaps: true }))
-			.pipe(babel({presets: ['es2015']}))
+			.pipe(babel({presets: ['@babel/env']}))
 		    .on('error', function(e) {
 				console.log(e);
 				this.emit('end');
@@ -31,7 +31,7 @@ gulp.task('watch', function() {
 		.on('error', console.log)
         .pipe(watch('src/**/*'))
 			.pipe(sourcemaps.init({ loadMaps: true }))
-				.pipe(babel({presets: ['es2015']}))
+				.pipe(babel({presets: ['@babel/env']}))
 			    .on('error', function(e) {
 					console.log(e);
 					this.emit('end');
@@ -40,6 +40,6 @@ gulp.task('watch', function() {
         .pipe(gulp.dest('./build/'));
 });
 
-gulp.task('build', ['js']);
+gulp.task('build', gulp.series('js'));
 
-gulp.task('default', ['js', 'watch']);
+gulp.task('default', gulp.series('js', 'watch'));
