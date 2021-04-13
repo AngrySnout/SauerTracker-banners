@@ -4,6 +4,7 @@ const http = require("http");
 const Promise = require("bluebird");
 
 const config = require("../config.json");
+const writeFile = Promise.promisify(fs.writeFile);
 
 class CacheManager {
 	constructor() {
@@ -74,7 +75,7 @@ class CacheManager {
 		hash = hash.digest("hex");
 		let outFile = `./cache/${hash}`;
 
-		fs.writeFile(outFile, contents);
+		writeFile(outFile, contents);
 		return hash;
 	}
 
